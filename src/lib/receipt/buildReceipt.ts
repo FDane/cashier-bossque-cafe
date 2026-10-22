@@ -1,0 +1,26 @@
+import type { Business, Order } from "@/types/models";
+export const buildReceipt = (order: Order, business: Business) => ({
+  width: "80mm",
+  logo: business.logo,
+  businessName: business.name,
+  address: business.address,
+  phone: business.phone,
+  date: new Date().toISOString(),
+  receiptNo: order.receiptNumber,
+  cashier: order.cashierName,
+  items: order.items.map((i) => ({
+    name: i.name,
+    qty: i.qty,
+    unitPriceSen: i.unitPriceSen,
+    modifiers: i.modifiers,
+  })),
+  subtotalSen: order.subtotalSen,
+  discountSen: order.discountSen,
+  taxSen: order.taxSen,
+  totalSen: order.totalSen,
+  payments: order.payments,
+  receivedSen: order.cashReceivedSen,
+  changeSen: order.changeSen,
+  footer: business.receiptFooter,
+  cut: true,
+});

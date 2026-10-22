@@ -1,0 +1,3 @@
+import { adminAuth } from "@/lib/firebase/admin";
+const COOKIE="bossque_cafe_session";
+export async function POST(request: Request){try { const value=request.headers.get("cookie")?.match(/bossque_cafe_session=([^;]+)/)?.[1]; if(value){const decoded=await adminAuth.verifySessionCookie(value); await adminAuth.revokeRefreshTokens(decoded.uid);} } catch {} const r=Response.json({ok:true});r.headers.append("Set-Cookie",`${COOKIE}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Lax`);return r;}

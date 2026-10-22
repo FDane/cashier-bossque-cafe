@@ -1,0 +1,1 @@
+export type AdminBusiness='carwash'|'cafe'; export const cafeBusinessId=process.env.NEXT_PUBLIC_BUSINESS_ID??'bossque-cafe'; export const getAdminNamespace=(business:AdminBusiness)=>business==='cafe'?{businessId:cafeBusinessId,root:`businesses/${cafeBusinessId}`}:{businessId:'legacy-carwash',root:'/' /* adapter legacy root collections here */};

@@ -1,0 +1,1 @@
+export const cafeAdminModules=['Product catalog + duplicate barcode check','Categories and drag ordering','Inventory receive / adjust / waste','Customers','Staff + claims API','Business / receipt / printer settings','Daily/monthly sales and gross profit reports','CSV product import/export'];

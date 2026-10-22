@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore { match /databases/{database}/documents {
+  // MERGE INTO EXISTING RULES. Keep existing Carwash root rules; do not replace them.
+  function signed(){return request.auth != null;}
+  function staffDoc(){return get(/databases/$(database)/documents/users/$(request.auth.uid));}
+  function isActiveStaff(){return signed() && staffDoc().data.isStaff == true && staffDoc().data.status == 'active';}
+  function posRole(){return staffDoc().data.posRole != null ? staffDoc().data.posRole : (staffDoc().data.role in ['ADMIN','MANAGER','CASHIER'] ? staffDoc().data.role : 'CASHIER');}
+  function manager(){return isActiveStaff() && posRole() in ['ADMIN','MANAGER'];}
+  function member(bid){return isActiveStaff() && (staffDoc().data.businessIds == null || bid in staffDoc().data.businessIds);}
+  match /users/{uid} { allow read: if isActiveStaff() && (request.auth.uid == uid || manager()); allow write: if false; }
+  match /inventory/{id} { allow read: if isActiveStaff() && resource.data.businessId == 'bossque-cafe'; allow write: if manager() && request.resource.data.businessId == 'bossque-cafe'; }
+  match /businesses/{bid}/orders/{id} { allow read: if member(bid); allow create: if member(bid) && posRole() in ['CASHIER','MANAGER','ADMIN']; allow update: if manager() && (resource.data.status == 'PENDING' || request.resource.data.status == 'REFUNDED'); allow delete: if false; }
+  match /businesses/{bid}/{collection}/{id} { allow read: if member(bid); allow create: if member(bid) && collection in ['cashCounts','cashAdjustments','shifts','stockMovements']; allow update: if manager() && collection in ['cashCounts','cashAdjustments','shifts']; allow delete: if false; }
+  match /businesses/{bid}/{document=**} { allow read: if member(bid); }
+}}
