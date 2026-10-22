@@ -1,1 +1,22 @@
-{"name":"Bossque Cafe POS","short_name":"Bossque POS","start_url":"/pos","display":"standalone","background_color":"#fbfaf5","theme_color":"#17221d","icons":[]}
+{
+  "name": "Bossque Cafe POS",
+  "short_name": "Bossque POS",
+  "start_url": "/pos",
+  "display": "standalone",
+  "background_color": "#fbfaf5",
+  "theme_color": "#17221d",
+  "icons":  [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
